@@ -26,6 +26,26 @@ interface IState {
   num: number
 }
 
+const MyComponent = (props: any) => {
+  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
+  const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+
+  return (
+    <div>
+      <ReactFlow
+        nodes={nodes}
+        edges={edges}
+        onNodesChange={onNodesChange}
+        onEdgesChange={onEdgesChange}
+      >
+        <MiniMap />
+        <Controls />
+        <Background />
+      </ReactFlow>
+    </div>
+  );
+}
+
 
 class STArgoFlow extends StreamlitComponentBase<IState> {
   state = {
@@ -47,20 +67,9 @@ class STArgoFlow extends StreamlitComponentBase<IState> {
   }
 
   public render = (): ReactNode => {
-    const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
-    const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
   
     return (
-      <ReactFlow
-        nodes={nodes}
-        edges={edges}
-        onNodesChange={onNodesChange}
-        onEdgesChange={onEdgesChange}
-      >
-        <MiniMap />
-        <Controls />
-        <Background />
-      </ReactFlow>
+      <MyComponent />
     );
   };
 

@@ -3,12 +3,13 @@ import streamlit as st
 import streamlit.components.v1 as components
 from typing import Union, Dict, List, Tuple
 
-_DEVELOP_MODE = os.getenv('DEVELOP_MODE') or os.getenv('ST_ANTD_DEVELOP_MODE')
+# _DEVELOP_MODE = os.getenv('DEVELOP_MODE') or os.getenv('ST_ANTD_DEVELOP_MODE')
+_DEVELOP_MODE = True
 
 if _DEVELOP_MODE:
     _component_func = components.declare_component(
         "streamlit_antd_tag",
-        url="http://localhost:3000",
+        url="http://localhost:3001",
     )
 else:
     parent_dir = os.path.dirname(os.path.abspath(__file__))
