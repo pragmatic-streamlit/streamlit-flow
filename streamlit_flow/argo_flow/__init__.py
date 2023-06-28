@@ -7,17 +7,17 @@ _DEVELOP_MODE = os.getenv('DEVELOP_MODE') or os.getenv('ST_ANTD_DEVELOP_MODE')
 
 if _DEVELOP_MODE:
     _component_func = components.declare_component(
-        "streamlit_antd_tag",
+        "streamlit_argo_flow",
         url="http://localhost:3000",
     )
 else:
     parent_dir = os.path.dirname(os.path.abspath(__file__))
     build_dir = os.path.join(parent_dir, "frontend/build")
-    _component_func = components.declare_component("streamlit_antd_tag", path=build_dir)
+    _component_func = components.declare_component("streamlit_argo_flow", path=build_dir)
 
 
-def st_antd_tag(tag_list: Tuple[str] = (), removable_start_idx: int = 0, log_tag_threshold: int = 20, new_tag_name='New Tag', key=None) -> List[str]:
-    component_value = _component_func(tag_list=list(tag_list), removable_start_idx=removable_start_idx, log_tag_threshold=log_tag_threshold, new_tag_name=new_tag_name, key=key)
+def st_argo_flow(key=None) -> List[str]:
+    component_value = _component_func(key=key)
     return list(tag_list) if component_value is None else component_value
 
 
