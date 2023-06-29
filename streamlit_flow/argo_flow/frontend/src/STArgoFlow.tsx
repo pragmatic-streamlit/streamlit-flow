@@ -3,36 +3,36 @@ import {
   StreamlitComponentBase,
   withStreamlitConnection,
 } from "streamlit-component-lib"
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useState } from 'react';
 import ReactFlow, {
   MiniMap,
   Controls,
   Background,
-  useNodesState,
-  useEdgesState,
-  addEdge,
+  // useNodesState,
+  // useEdgesState,
 } from 'reactflow';
 
 import 'reactflow/dist/style.css';
 
-const initialNodes = [
-  { id: '1', position: { x: 0, y: 0 }, data: { label: '1' } },
-  { id: '2', position: { x: 0, y: 100 }, data: { label: '2' } },
-];
-
-const initialEdges = [{ id: 'e1-2', source: '1', target: '2' }];
-
 interface IState {
-  num: number
+  nodes: any,
+  edges: any,
 }
 
 const ArgoFlow = (props: any) => {
-  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
-  const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+  // eslint-disable-next-line
+  // const [nodes, setNodes, onNodesChange] = useNodesState(state.nodes);
+  // eslint-disable-next-line
+  // const [edges, setEdges, onEdgesChange] = useEdgesState(state.edges);
+
+  // eslint-disable-next-line
+  const [nodes, setNodes] = useState(props.nodes);
+  // eslint-disable-next-line
+  const [edges, setEdges] = useState(props.edges);
 
   return (
-    <div>
-      777
+    <div style={{ height: 100 }}>
+      <h1>ArgoFlow</h1>
       <ReactFlow
         nodes={nodes}
         edges={edges}
@@ -45,10 +45,16 @@ const ArgoFlow = (props: any) => {
   );
 }
 
-
 class STArgoFlow extends StreamlitComponentBase<IState> {
   state = {
-    num: 0
+    nodes: this.props.args.nodes,
+    edges: this.props.args.edges,
+  }
+  constructor(props: any) {
+    super(props);
+    console.log("-----------------------");
+    console.log('nodes: ', props.args.nodes);
+    console.log('edges: ', props.args.edges);
   }
 
   ajustHeight() {
@@ -66,9 +72,7 @@ class STArgoFlow extends StreamlitComponentBase<IState> {
   }
 
   public render = (): ReactNode => {
-  
-    return <ArgoFlow />
-
+    return <ArgoFlow nodes={this.state.nodes} edges={this.state.edges}></ArgoFlow>
   };
 
 }

@@ -2,10 +2,12 @@ import os
 import streamlit as st
 import streamlit.components.v1 as components
 from typing import Union, Dict, List, Tuple
+import json
 
-_DEVELOP_MODE = os.getenv('DEVELOP_MODE') or os.getenv('ST_ANTD_DEVELOP_MODE')
+_DEVELOP_MODE = os.getenv('DEVELOP_MODE')
 
 if _DEVELOP_MODE:
+    print('devel mode')
     _component_func = components.declare_component(
         "streamlit_argo_flow",
         url="http://localhost:3000",
@@ -16,21 +18,21 @@ else:
     _component_func = components.declare_component("streamlit_argo_flow", path=build_dir)
 
 
-def st_argo_flow(key=None) -> List[str]:
-    component_value = _component_func(key=key)
-    return list(tag_list) if component_value is None else component_value
+def st_argo_flow(nodes, edges, key=None) -> List[str]:
+    component_value = _component_func(nodes=nodes, edges=edges, key=key)
+    return component_value
 
 
-if _DEVELOP_MODE or os.getenv('SHOW_TAG_DEMO'):
+if _DEVELOP_MODE:
+    nodes = [
+        { "id": '1', "position": { "x": 0, "y": 0 }, "data": { "label": '1' } },
+        { "id": '2', "position": { "x": 0, "y": 100 }, "data": { "label": '2' } },
+    ]
+
+    edges = [{ "id": 'e1-2', "source": '1', "target": '2' }]
     import streamlit as st
     st.set_page_config(layout="wide")
 
-    event = st_antd_tag(key='demo1')
-    print("event:", event)
-    
-    event = st_antd_tag(['tag1', 'tag2', 'tag3'], 2, 'new', key='demo2')
-    print("event:", event)
-    
-    event = st_antd_tag(['tag1', 'tag2', 'tag3tag3tag3tag3tag3tag3tag3tag3tag3tag3tag3'], 2, 50, 'new', key='demo3')
+    event = st_argo_flow(nodes=nodes, edges=edges, key='demo1')
     print("event:", event)
 
