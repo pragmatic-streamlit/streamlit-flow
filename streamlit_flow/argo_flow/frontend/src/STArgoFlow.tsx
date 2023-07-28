@@ -23,8 +23,8 @@ interface IState {
 const dagreGraph = new dagre.graphlib.Graph();
 dagreGraph.setDefaultEdgeLabel(() => ({}));
 
-const nodeWidth = 172;
-const nodeHeight = 36;
+const nodeWidth = 180;
+const nodeHeight = 60;
 
 const getLayoutedElements = (nodes: Array<any>, edges: Array<any>, direction = 'TB') => {
   const isHorizontal = direction === 'LR';
@@ -89,8 +89,8 @@ class STArgoFlow extends StreamlitComponentBase<IState> {
   }
   constructor(props: any) {
     super(props);
-    console.log('nodes: ', props.args.nodes);
-    console.log('edges: ', props.args.edges);
+    // console.log('nodes: ', props.args.nodes);
+    // console.log('edges: ', props.args.edges);
   }
 
   ajustHeight() {
@@ -108,6 +108,7 @@ class STArgoFlow extends StreamlitComponentBase<IState> {
   }
 
   public render = (): ReactNode => {
+    // console.log(this.props.args.height)
     return (
       <ArgoFlow 
         nodes={this.state.nodes}
