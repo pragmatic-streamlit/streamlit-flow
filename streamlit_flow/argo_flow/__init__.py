@@ -76,19 +76,3 @@ def st_argo_flow(dflow_nodes, height=400, width="100%", x_diff=180, y_diff=80, k
     component_value = _component_func(nodes=nodes, edges=edges, height=height, width=width, key=key)
     return component_value
 
-
-# if _DEVELOP_MODE:
-#     nodes = [
-#         { "id": '1', "position": { "x": 0, "y": 0 }, "data": { "label": '1' } },
-#         { "id": '2', "position": { "x": 0, "y": 100 }, "data": { "label": '2' } },
-#         { "id": '3', "position": { "x": -100, "y": 100 }, "data": { "label": '3' } },
-#     ]
-
-#     edges = [{ "id": 'e1-2', "source": '1', "target": '2' }, { "id": 'e1-3', "source": '1', "target": '3' }]
-#     import streamlit as st
-#     st.set_page_config(layout="wide")
-
-    # event = st_argo_flow(nodes=nodes, edges=edges, key='demo1')
-    # st.divider()
-    # event = st_argo_flow(nodes=nodes, edges=edges, key='demo2')
-
