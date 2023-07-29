@@ -2,9 +2,10 @@ import os
 import streamlit as st
 import streamlit.components.v1 as components
 from typing import Union, Dict, List, Tuple
-import json
+from collections import OrderedDict
 
 _DEVELOP_MODE = os.getenv('DEVELOP_MODE')
+edgeType = 'default'
 
 if _DEVELOP_MODE:
     print('devel mode')
@@ -18,14 +19,68 @@ else:
     _component_func = components.declare_component("streamlit_argo_flow", path=build_dir)
 
 
+def add_valid_children(node_k, next_node_k, dflow_nodes, nodes, edges, cur_nodes, cur_nodes_set, invalid_node_type):
+    next_dflow_node = dflow_nodes[next_node_k]
+    if next_dflow_node['type'] in invalid_node_type:
+        for next_node_k in next_dflow_node.get('children', []):
+            add_valid_children(node_k, next_node_k, dflow_nodes, nodes, edges, cur_nodes, cur_nodes_set, invalid_node_type)
+    else:
+        nodes.append({
+            "id": next_node_k,
+            "position": { "x": 0, "y": 0},
+            "data": { "label": '' if next_dflow_node['type'] in invalid_node_type else next_dflow_node['displayName']},
+            'type': "ArgoWorkflowNode"
+        })
+        edges.append({"id": f'{node_k}--{next_node_k}', "source": node_k, "target": next_node_k, "type": edgeType})
+        
+        if next_node_k not in cur_nodes_set:
+            cur_nodes_set.add(next_node_k)
+            cur_nodes.append(next_node_k)
+
+
 def st_argo_flow(dflow_nodes, height=400, width="100%", key=None) -> List[str]:
     # dflow_nodes = ret['status']['nodes']
-    edgeType = 'smoothstep'
+    
+    nodes = []
+    edges = []
+    root_node_k = list(dflow_nodes.keys())[0]
+    prev_nodes = [root_node_k]
+    invalid_node_type = {'StepGroup'}
+
+    # 添加根节点
+    nodes.append({
+        "id": root_node_k,
+        "position": { "x": 0, "y": 0 },
+        "data": { "label": dflow_nodes[root_node_k]['displayName']},
+        'type': "ArgoWorkflowNode"
+    })
+
+    while prev_nodes:
+        cur_nodes = []
+        cur_nodes_set = set()
+        for node_k in prev_nodes:
+            dflow_node = dflow_nodes[node_k]
+            if 'children' not in dflow_node:
+                continue
+
+            for next_node_k in dflow_node['children']:
+                add_valid_children(node_k, next_node_k, dflow_nodes, nodes, edges, cur_nodes, cur_nodes_set, invalid_node_type)
+
+        prev_nodes = cur_nodes
+
+    component_value = _component_func(nodes=nodes, edges=edges, height=height, width=width, key=key)
+    return component_value
+
+
+def st_argo_flow1(dflow_nodes, height=400, width="100%", key=None) -> List[str]:
+    # dflow_nodes = ret['status']['nodes']
+    
     nodes = []
     edges = []
     root_node_k = list(dflow_nodes.keys())[0]
     prev_nodes = [root_node_k]
     empty_node_type = {'StepGroup'}
+    empty_node = set()
 
     # 添加根节点
     nodes.append({
@@ -51,17 +106,15 @@ def st_argo_flow(dflow_nodes, height=400, width="100%", key=None) -> List[str]:
                     "data": { "label": '' if next_dflow_node['type'] in empty_node_type else next_dflow_node['displayName']},
                     'type': "ArgoWorkflowNode"
                 })
-                # if next_dflow_node['type'] == 'StepGroup':
-                #     nodes[-1].update({'type': "StepGroup"})
-
                 edges.append({"id": f'{node_k}--{next_node_k}', "source": node_k, "target": next_node_k, "type": edgeType})
                 
                 if next_node_k not in cur_nodes_set:
                     cur_nodes_set.add(next_node_k)
                     cur_nodes.append(next_node_k)
+                    if next_dflow_node['type'] in empty_node_type:
+                        empty_node.add(next_node_k)
 
         prev_nodes = cur_nodes
 
     component_value = _component_func(nodes=nodes, edges=edges, height=height, width=width, key=key)
     return component_value
-
