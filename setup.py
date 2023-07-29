@@ -15,5 +15,6 @@ setuptools.setup(
     python_requires=">=3.8",
     install_requires=[
         "streamlit >= 1.23",
+        "ordered-set >= 4.1.0"
     ],
 )

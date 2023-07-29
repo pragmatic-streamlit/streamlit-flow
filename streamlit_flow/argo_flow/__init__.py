@@ -2,7 +2,8 @@ import os
 import streamlit as st
 import streamlit.components.v1 as components
 from typing import Union, Dict, List, Tuple
-from collections import OrderedDict
+from ordered_set import OrderedSet
+
 
 _DEVELOP_MODE = os.getenv('DEVELOP_MODE')
 edgeType = 'default'
@@ -19,11 +20,11 @@ else:
     _component_func = components.declare_component("streamlit_argo_flow", path=build_dir)
 
 
-def add_valid_children(node_k, next_node_k, dflow_nodes, nodes, edges, cur_nodes, cur_nodes_set, invalid_node_type):
+def add_valid_children(node_k, next_node_k, dflow_nodes, nodes, edges, cur_nodes, invalid_node_type):
     next_dflow_node = dflow_nodes[next_node_k]
     if next_dflow_node['type'] in invalid_node_type:
         for next_node_k in next_dflow_node.get('children', []):
-            add_valid_children(node_k, next_node_k, dflow_nodes, nodes, edges, cur_nodes, cur_nodes_set, invalid_node_type)
+            add_valid_children(node_k, next_node_k, dflow_nodes, nodes, edges, cur_nodes, invalid_node_type)
     else:
         nodes.append({
             "id": next_node_k,
@@ -33,8 +34,7 @@ def add_valid_children(node_k, next_node_k, dflow_nodes, nodes, edges, cur_nodes
         })
         edges.append({"id": f'{node_k}--{next_node_k}', "source": node_k, "target": next_node_k, "type": edgeType})
         
-        if next_node_k not in cur_nodes_set:
-            cur_nodes_set.add(next_node_k)
+        if next_node_k not in cur_nodes:
             cur_nodes.append(next_node_k)
 
 
@@ -44,7 +44,7 @@ def st_argo_flow(dflow_nodes, height=400, width="100%", key=None) -> List[str]:
     nodes = []
     edges = []
     root_node_k = list(dflow_nodes.keys())[0]
-    prev_nodes = [root_node_k]
+    prev_nodes = OrderedSet([root_node_k])
     invalid_node_type = {'StepGroup'}
 
     # 添加根节点
@@ -56,15 +56,14 @@ def st_argo_flow(dflow_nodes, height=400, width="100%", key=None) -> List[str]:
     })
 
     while prev_nodes:
-        cur_nodes = []
-        cur_nodes_set = set()
+        cur_nodes = OrderedSet()
         for node_k in prev_nodes:
             dflow_node = dflow_nodes[node_k]
             if 'children' not in dflow_node:
                 continue
 
             for next_node_k in dflow_node['children']:
-                add_valid_children(node_k, next_node_k, dflow_nodes, nodes, edges, cur_nodes, cur_nodes_set, invalid_node_type)
+                add_valid_children(node_k, next_node_k, dflow_nodes, nodes, edges, cur_nodes, invalid_node_type)
 
         prev_nodes = cur_nodes
 
