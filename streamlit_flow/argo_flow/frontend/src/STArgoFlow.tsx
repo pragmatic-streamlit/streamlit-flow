@@ -3,7 +3,7 @@ import {
   StreamlitComponentBase,
   withStreamlitConnection,
 } from "streamlit-component-lib"
-import { ReactNode, useMemo } from 'react';
+import { ReactNode } from 'react';
 import ReactFlow, {
   MiniMap,
   Controls,
