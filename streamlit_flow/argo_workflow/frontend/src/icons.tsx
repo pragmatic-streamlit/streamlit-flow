@@ -1,12 +1,18 @@
-import React from "react";
-import Icons from "./icons.svg";
+import Icons from "./img/icons.svg";
 import PropTypes from 'prop-types';
 
-const Icon = ({ name, color, size }) => (
-  <svg className={`argo-node-icon icon-${name}`} color={color} width={size} height={size}>
-    <use xlinkHref={`${Icons}#${name}`} />
-  </svg>
-);
+const Icon = ({ name, color, size}) => {
+  let class_name = `argo-node-icon icon-${name}`
+  if(name === "running"){
+    class_name += " icon-spinner"
+  }
+  
+  return (
+    <svg className={class_name} color={color} width={size} height={size}>
+      <use xlinkHref={`${Icons}#${name}`} />
+    </svg>
+  );
+}
 
 Icon.propTypes = {
   name: PropTypes.string.isRequired,

@@ -43,12 +43,12 @@ const ArgoWorkflowNode = ({
   }else if(data.phase === "Pending"){
     icon_name = ""
   }else if(data.phase === "Succeeded"){
-    icon_name = "check-circle-fill"
+    icon_name = "success"
     color = node_color.success
   }else if(data.phase === "Skipped"){
 
   }else if(data.phase === "Failed" || data.phase === "Error"){
-    icon_name = "xmark-circle-fill"
+    icon_name = "failed"
     color = node_color.failed
   }
 
@@ -88,7 +88,7 @@ interface IState {
 const dagreGraph = new dagre.graphlib.Graph();
 dagreGraph.setDefaultEdgeLabel(() => ({}));
 
-const nodeWidth = 200;
+const nodeWidth = 120;
 const nodeHeight = 60;
 
 var argo_node_maxx = 0;
