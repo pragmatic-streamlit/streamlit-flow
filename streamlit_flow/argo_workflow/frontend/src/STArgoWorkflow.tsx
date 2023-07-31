@@ -10,7 +10,8 @@ import ReactFlow, {
   Background,
   Handle,
   Position,
-  NodeProps
+  NodeProps,
+  SelectionMode
   // useNodesState,
   // useEdgesState,
 } from 'reactflow';
@@ -19,6 +20,8 @@ import Icon from "./icons";
 
 import 'reactflow/dist/style.css';
 import './custom_style.css';
+
+const panOnDrag = [1, 2];
 
 const node_color = {
   success: "#1ebd96",
@@ -34,16 +37,19 @@ const ArgoWorkflowNode = ({
 }: NodeProps) => {
 
   let icon_name = "";
+  let color = "";
   if(data.phase === "Running"){
     
   }else if(data.phase === "Pending"){
     icon_name = ""
   }else if(data.phase === "Succeeded"){
     icon_name = "check-circle-fill"
+    color = node_color.success
   }else if(data.phase === "Skipped"){
 
   }else if(data.phase === "Failed" || data.phase === "Error"){
     icon_name = "xmark-circle-fill"
+    color = node_color.failed
   }
 
   if(icon_name !== ""){
@@ -52,7 +58,7 @@ const ArgoWorkflowNode = ({
         <Handle className="argo-node-handle top" type="target" position={targetPosition} isConnectable={isConnectable}/>
         <div className="argo-node-div">
         {data?.label}
-        <Icon name={"check-circle-fill"} color={node_color.success} size={12} />
+        <Icon name={icon_name} color={color} size={12} />
         </div>
         <Handle className="argo-node-handle bottom" type="source" position={sourcePosition} isConnectable={isConnectable}/>
       </>
@@ -85,6 +91,9 @@ dagreGraph.setDefaultEdgeLabel(() => ({}));
 const nodeWidth = 200;
 const nodeHeight = 60;
 
+var argo_node_maxx = 0;
+var argo_node_maxy = 0;
+
 const getLayoutedElements = (nodes: Array<any>, edges: Array<any>, direction = 'TB') => {
   const isHorizontal = direction === 'LR';
   dagreGraph.setGraph({ rankdir: direction });
@@ -106,17 +115,12 @@ const getLayoutedElements = (nodes: Array<any>, edges: Array<any>, direction = '
 
     // We are shifting the dagre node position (anchor=center center) to the top left
     // so it matches the React Flow node anchor point (top left).
-    if(node.type !== "StepGroup"){
-      node.position = {
-        x: nodeWithPosition.x - nodeWidth / 2,
-        y: nodeWithPosition.y - nodeHeight / 2,
-      };
-    }else{
-      node.position = {
-        x: nodeWithPosition.x - nodeWidth / 2,
-        y: nodeWithPosition.y - nodeHeight / 2,
-      };
-    }
+    node.position = {
+      x: nodeWithPosition.x - nodeWidth / 2,
+      y: nodeWithPosition.y - nodeHeight / 2,
+    };
+    argo_node_maxx = Math.max(argo_node_maxx, node.position.x + nodeWidth);
+    argo_node_maxy = Math.max(argo_node_maxy, node.position.y + nodeHeight);
     return node;
   });
 
@@ -124,19 +128,19 @@ const getLayoutedElements = (nodes: Array<any>, edges: Array<any>, direction = '
 };
 
 const ArgoFlow = (props: any) => {
-  // eslint-disable-next-line
-  // const [nodes, setNodes] = useState(props.nodes);
-  // eslint-disable-next-line
-  // const [edges, setEdges] = useState(props.edges);
-
-  let { nodes, edges } = getLayoutedElements(props.nodes, props.edges, 'TB');
+  getLayoutedElements(props.nodes, props.edges, 'TB');
 
   return (
       <ReactFlow
-        nodes={nodes}
-        edges={edges}
+        style={{ background: '#dee6eb' }}
+        nodes={props.nodes}
+        edges={props.edges}
         nodeTypes={nodeTypes}
         fitView
+        panOnScroll
+        selectionOnDrag
+        minZoom={1}
+        translateExtent={[[-500, -200], [argo_node_maxx + 500, argo_node_maxy + 200]]}
       >
         <MiniMap />
         <Controls />
@@ -171,7 +175,6 @@ class STArgoFlow extends StreamlitComponentBase<IState> {
     // console.log(this.props.args.height)
     return (
       <div style={{ height: this.props.args.height, width: this.props.args.width }}>
-        <h1>ArgoFlow</h1>
         <ArgoFlow 
           nodes={this.state.nodes}
           edges={this.state.edges}
