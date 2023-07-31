@@ -1,6 +1,6 @@
 import React from "react"
 import ReactDOM from "react-dom"
-import STArgoFlow from "./STArgoFlow"
+import STArgoFlow from "./STArgoWorkflow"
 
 ReactDOM.render(
   

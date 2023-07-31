@@ -55,6 +55,13 @@ const ArgoWorkflowNode = ({
       </>
     );
   }
+  // "": JobStatus.RUNNING,
+  // "Pending": JobStatus.RUNNING,
+  // "Running": JobStatus.RUNNING,
+  // "Succeeded": JobStatus.FINISHED,
+  // "Skipped": JobStatus.FINISHED,
+  // "Failed": JobStatus.FAILED,
+  // "Error": JobStatus.FAILED,
 
   return (
     <>

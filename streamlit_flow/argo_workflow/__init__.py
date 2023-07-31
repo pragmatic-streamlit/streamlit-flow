@@ -11,7 +11,7 @@ edgeType = 'default'
 if _DEVELOP_MODE:
     print('devel mode')
     _component_func = components.declare_component(
-        "streamlit_argo_flow",
+        "streamlit_argo_workflow",
         url="http://localhost:3000",
     )
 else:
@@ -29,7 +29,10 @@ def add_valid_children(node_k, next_node_k, dflow_nodes, nodes, edges, cur_nodes
         nodes.append({
             "id": next_node_k,
             "position": { "x": 0, "y": 0},
-            "data": { "label": '' if next_dflow_node['type'] in invalid_node_type else next_dflow_node['displayName']},
+            "data": {
+                "label": '' if next_dflow_node['type'] in invalid_node_type else next_dflow_node['displayName'],
+                'phase':  next_dflow_node['phase']
+            },
             'type': "ArgoWorkflowNode"
         })
         edges.append({"id": f'{node_k}--{next_node_k}', "source": node_k, "target": next_node_k, "type": edgeType})
@@ -38,7 +41,7 @@ def add_valid_children(node_k, next_node_k, dflow_nodes, nodes, edges, cur_nodes
             cur_nodes.append(next_node_k)
 
 
-def st_argo_flow(dflow_nodes, height=400, width="100%", key=None) -> List[str]:
+def st_argo_workflow(dflow_nodes, height=400, width="100%", key=None) -> List[str]:
     # dflow_nodes = ret['status']['nodes']
     
     nodes = []
@@ -71,7 +74,7 @@ def st_argo_flow(dflow_nodes, height=400, width="100%", key=None) -> List[str]:
     return component_value
 
 
-def st_argo_flow1(dflow_nodes, height=400, width="100%", key=None) -> List[str]:
+def st_argo_workflow1(dflow_nodes, height=400, width="100%", key=None) -> List[str]:
     # dflow_nodes = ret['status']['nodes']
     
     nodes = []
