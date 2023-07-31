@@ -54,7 +54,10 @@ def st_argo_workflow(dflow_nodes, height=400, width="100%", key=None) -> List[st
     nodes.append({
         "id": root_node_k,
         "position": { "x": 0, "y": 0 },
-        "data": { "label": dflow_nodes[root_node_k]['displayName']},
+        "data": {
+            "label": dflow_nodes[root_node_k]['displayName'],
+            'phase': dflow_nodes[root_node_k]['phase']
+        },
         'type': "ArgoWorkflowNode"
     })
 
@@ -70,6 +73,7 @@ def st_argo_workflow(dflow_nodes, height=400, width="100%", key=None) -> List[st
 
         prev_nodes = cur_nodes
 
+    print(nodes)
     component_value = _component_func(nodes=nodes, edges=edges, height=height, width=width, key=key)
     return component_value
 

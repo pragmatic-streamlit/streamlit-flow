@@ -1,0 +1,19 @@
+[class^="argo-node-icon"] {
+    fill: currentColor;
+}
+
+.argo-node-handle {
+    background: #eee;
+}
+
+.argo-node-div {
+    padding: 5px;
+    border-radius: 5px;
+    width: 150px;
+    font-size: 12px;
+    text-align: center;
+    border-width: 0px;
+    border-style: solid;
+    border-color: #777777;
+    background-color: #eee;
+}

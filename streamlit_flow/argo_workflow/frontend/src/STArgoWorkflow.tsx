@@ -8,35 +8,21 @@ import ReactFlow, {
   MiniMap,
   Controls,
   Background,
+  Handle,
+  Position,
+  NodeProps
   // useNodesState,
   // useEdgesState,
 } from 'reactflow';
 import dagre from '@dagrejs/dagre';
+import Icon from "./icons";
 
 import 'reactflow/dist/style.css';
-
-import { Handle, Position, NodeProps } from 'reactflow';
+import './custom_style.css';
 
 const node_color = {
   success: "#1ebd96",
   failed: "#e77177",
-}
-const node_basic_style = {
-  "padding": "5px",
-  "borderRadius": "5px",
-  "width": "150px",
-  "fontSize": "12px",
-  "color": "#222",
-  "textAlign": "center",
-  "borderWidth": "0px",
-  "borderStyle": "solid",
-  "borderColor": "#1a192b",
-}
-
-const empty_style = {
-  "padding": "0px",
-  "width": "160px",
-  "height": "1px",
 }
 
 // custom node
@@ -46,32 +32,42 @@ const ArgoWorkflowNode = ({
   targetPosition = Position.Top,
   sourcePosition = Position.Bottom,
 }: NodeProps) => {
-  if(data.label === ""){
+
+  let icon_name = "";
+  if(data.phase === "Running"){
+    
+  }else if(data.phase === "Pending"){
+    icon_name = ""
+  }else if(data.phase === "Succeeded"){
+    icon_name = "check-circle-fill"
+  }else if(data.phase === "Skipped"){
+
+  }else if(data.phase === "Failed" || data.phase === "Error"){
+    icon_name = "xmark-circle-fill"
+  }
+
+  if(icon_name !== ""){
     return (
       <>
-        <Handle type="target" position={targetPosition} isConnectable={isConnectable} />
-        <div style={empty_style}></div>
-        <Handle type="source" position={sourcePosition} isConnectable={isConnectable} />
+        <Handle className="argo-node-handle top" type="target" position={targetPosition} isConnectable={isConnectable}/>
+        <div className="argo-node-div">
+        {data?.label}
+        <Icon name={"check-circle-fill"} color={node_color.success} size={12} />
+        </div>
+        <Handle className="argo-node-handle bottom" type="source" position={sourcePosition} isConnectable={isConnectable}/>
+      </>
+    );
+  }else{
+    return (
+      <>
+        <Handle className="argo-node-handle top" type="target" position={targetPosition} isConnectable={isConnectable}/>
+        <div className="argo-node-div">
+        {data?.label}
+        </div>
+        <Handle className="argo-node-handle bottom" type="source" position={sourcePosition} isConnectable={isConnectable}/>
       </>
     );
   }
-  // "": JobStatus.RUNNING,
-  // "Pending": JobStatus.RUNNING,
-  // "Running": JobStatus.RUNNING,
-  // "Succeeded": JobStatus.FINISHED,
-  // "Skipped": JobStatus.FINISHED,
-  // "Failed": JobStatus.FAILED,
-  // "Error": JobStatus.FAILED,
-
-  return (
-    <>
-      <Handle type="target" position={targetPosition} isConnectable={isConnectable} />
-      <div style={{...node_basic_style, backgroundColor: node_color.success}}>
-      {data?.label}
-      </div>
-      <Handle type="source" position={sourcePosition} isConnectable={isConnectable} />
-    </>
-  );
 };
 
 const nodeTypes = {
@@ -144,7 +140,6 @@ const ArgoFlow = (props: any) => {
       >
         <MiniMap />
         <Controls />
-        <Background />
       </ReactFlow>
   );
 }
