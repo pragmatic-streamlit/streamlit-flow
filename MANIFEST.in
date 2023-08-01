@@ -1,1 +1,1 @@
-recursive-include */*/frontend/build *
+recursive-include */*/frontend/dist *

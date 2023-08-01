@@ -16,8 +16,8 @@ if _DEVELOP_MODE:
     )
 else:
     parent_dir = os.path.dirname(os.path.abspath(__file__))
-    build_dir = os.path.join(parent_dir, "frontend/build")
-    _component_func = components.declare_component("streamlit_argo_flow", path=build_dir)
+    build_dir = os.path.join(parent_dir, "frontend/dist")
+    _component_func = components.declare_component("streamlit_argo_workflow", path=build_dir)
 
 
 def add_valid_children(node_k, next_node_k, dflow_nodes, nodes, edges, cur_nodes, invalid_node_type):

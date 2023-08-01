@@ -1,0 +1,27 @@
+[project]
+name = "streamlit-argoworkflow"
+version = "0.0.1"
+description = "React Components for Streamlit and Argoworkflow."
+requires-python = ">=3.8"
+# long_description = file: README.md
+# long_description_content_type = text/markdown
+authors = [
+  {name = "Yao Sikai", email = "yaosk@dp.tech"},
+]
+license = {text = "MIT License"}
+dependencies = [
+  "streamlit >= 1.4.0",
+  "ordered-set >= 4.1.0"
+  "build >= 0.10.0"
+]
+
+[tool.setuptools.packages.find]
+where = ["streamlit_flow"]
+
+[project.urls]
+home_page = "https://github.com/Angel-Jia/streamlit-flow"
+
+[build-system]
+requires = ["setuptools >= 61.0.0", "wheel"]
+build-backend = 'setuptools.build_meta'
+
