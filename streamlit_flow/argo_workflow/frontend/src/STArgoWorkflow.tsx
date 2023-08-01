@@ -7,13 +7,9 @@ import { ReactNode } from 'react';
 import ReactFlow, {
   MiniMap,
   Controls,
-  Background,
   Handle,
   Position,
-  NodeProps,
-  SelectionMode
-  // useNodesState,
-  // useEdgesState,
+  NodeProps
 } from 'reactflow';
 import dagre from '@dagrejs/dagre';
 import Icon from "./icons";
@@ -93,9 +89,6 @@ dagreGraph.setDefaultEdgeLabel(() => ({}));
 const nodeWidth = 120;
 const nodeHeight = 60;
 
-var argo_node_maxx = 0;
-var argo_node_maxy = 0;
-
 const getLayoutedElements = (nodes: Array<any>, edges: Array<any>, direction = 'TB') => {
   const isHorizontal = direction === 'LR';
   dagreGraph.setGraph({ rankdir: direction });
@@ -109,6 +102,8 @@ const getLayoutedElements = (nodes: Array<any>, edges: Array<any>, direction = '
   });
 
   dagre.layout(dagreGraph);
+  let argo_node_maxx = 0;
+  let argo_node_maxy = 0;
 
   nodes.forEach((node: any) => {
     const nodeWithPosition = dagreGraph.node(node.id);
@@ -126,11 +121,11 @@ const getLayoutedElements = (nodes: Array<any>, edges: Array<any>, direction = '
     return node;
   });
 
-  return { nodes, edges };
+  return { argo_node_maxx, argo_node_maxy };
 };
 
 const ArgoFlow = (props: any) => {
-  getLayoutedElements(props.nodes, props.edges, 'TB');
+  let {argo_node_maxx, argo_node_maxy} = getLayoutedElements(props.nodes, props.edges, 'TB');
 
   return (
       <ReactFlow
@@ -141,10 +136,11 @@ const ArgoFlow = (props: any) => {
         fitView
         panOnScroll
         selectionOnDrag
-        minZoom={1}
+        minZoom={0.8}
+        maxZoom={1.5}
         translateExtent={[[-500, -200], [argo_node_maxx + 500, argo_node_maxy + 200]]}
       >
-        <MiniMap />
+        <MiniMap zoomable pannable nodeColor={"#000"} zoomStep={1} />
         <Controls />
       </ReactFlow>
   );

@@ -1,10 +1,10 @@
 import setuptools
 
 setuptools.setup(
-    name="streamlit-argo",
+    name="streamlit-argoworkflow",
     version="0.0.1",
-    author="",
-    author_email="",
+    author="yaosikai",
+    author_email="yaosk@dp.tech",
     description="",
     long_description="",
     long_description_content_type="text/plain",
