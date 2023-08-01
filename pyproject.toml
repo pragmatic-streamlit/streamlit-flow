@@ -1,5 +1,5 @@
 [project]
-name = "streamlit-argoworkflow"
+name = "streamlit-flow"
 version = "0.0.1"
 description = "React Components for Streamlit and Argoworkflow."
 requires-python = ">=3.8"
@@ -11,7 +11,7 @@ authors = [
 license = {text = "MIT License"}
 dependencies = [
   "streamlit >= 1.4.0",
-  "ordered-set >= 4.1.0"
+  "ordered-set >= 4.1.0",
   "build >= 0.10.0"
 ]
 
