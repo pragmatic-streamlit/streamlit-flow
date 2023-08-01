@@ -15,7 +15,7 @@ dependencies = [
 ]
 
 [tool.setuptools.packages.find]
-where = ["streamlit_flow"]
+where = ["./"]
 
 [project.urls]
 home_page = "https://github.com/Angel-Jia/streamlit-flow"
