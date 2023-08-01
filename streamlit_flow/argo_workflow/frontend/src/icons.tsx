@@ -8,9 +8,11 @@ const Icon = ({ name, color, size}) => {
   }
   
   return (
-    <svg className={class_name} color={color} width={size} height={size}>
-      <use xlinkHref={`${Icons}#${name}`} />
-    </svg>
+    <div>
+      <svg className={class_name} color={color} width={size} height={size}>
+        <use xlinkHref={`${Icons}#${name}`} />
+      </svg>
+    </div>
   );
 }
 

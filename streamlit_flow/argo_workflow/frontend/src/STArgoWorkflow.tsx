@@ -21,11 +21,11 @@ import Icon from "./icons";
 import 'reactflow/dist/style.css';
 import './custom_style.css';
 
-const panOnDrag = [1, 2];
-
 const node_color = {
   success: "#1ebd96",
   failed: "#e77177",
+  running: "#2789cd",
+  pending: "#eea433",
 }
 
 // custom node
@@ -39,9 +39,11 @@ const ArgoWorkflowNode = ({
   let icon_name = "";
   let color = "";
   if(data.phase === "Running"){
-    
+    icon_name = "running"
+    color = node_color.running
   }else if(data.phase === "Pending"){
-    icon_name = ""
+    icon_name = "pending"
+    color = node_color.pending
   }else if(data.phase === "Succeeded"){
     icon_name = "success"
     color = node_color.success

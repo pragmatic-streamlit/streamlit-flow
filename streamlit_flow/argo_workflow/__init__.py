@@ -36,6 +36,8 @@ def add_valid_children(node_k, next_node_k, dflow_nodes, nodes, edges, cur_nodes
             'type': "ArgoWorkflowNode"
         })
         edges.append({"id": f'{node_k}--{next_node_k}', "source": node_k, "target": next_node_k, "type": edgeType})
+        if next_dflow_node['phase'] == 'Running':
+            edges[-1]['animated'] = True
         
         if next_node_k not in cur_nodes:
             cur_nodes.append(next_node_k)
@@ -73,7 +75,6 @@ def st_argo_workflow(dflow_nodes, height=400, width="100%", key=None) -> List[st
 
         prev_nodes = cur_nodes
 
-    print(nodes)
     component_value = _component_func(nodes=nodes, edges=edges, height=height, width=width, key=key)
     return component_value
 
