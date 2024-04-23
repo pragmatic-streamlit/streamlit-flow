@@ -35,7 +35,7 @@
     "type": "Pod",
     "templateName": "demo-ykdl6",
     "templateScope": "local/demo-x6l98",
-    "phase": "Succeeded",
+    "phase": "Running",
     "boundaryID": "demo-x6l98",
     "startedAt": "2023-08-04T14:15:26Z",
     "finishedAt": "2023-08-04T14:15:39Z",
