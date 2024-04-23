@@ -1,6 +1,6 @@
 # Streamlit flow
 
-Streamlit flow allows one to easily display Argo workflow nodes.
+Streamlit flow allows one to easily display Argo workflow nodes. It supports the node phases “success”, “failed”, “running”, “pending”.
 
 ## Install
 ```
