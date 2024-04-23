@@ -1,0 +1,107 @@
+{
+  "demo-x6l98": {
+    "id": "demo-x6l98",
+    "name": "demo-x6l98",
+    "displayName": "demo-x6l98",
+    "type": "Steps",
+    "templateName": "demo-steps",
+    "templateScope": "local/demo-x6l98",
+    "phase": "Succeeded",
+    "startedAt": "2023-08-04T14:15:26Z",
+    "finishedAt": "2023-08-04T14:15:49Z",
+    "progress": "1/1",
+    "resourcesDuration": { "cpu": 21, "memory": 32 },
+    "children": ["demo-x6l98-1694283883"],
+    "outboundNodes": ["demo-x6l98-3881077233"]
+  },
+  "demo-x6l98-1694283883": {
+    "id": "demo-x6l98-1694283883",
+    "name": "demo-x6l98[0]",
+    "displayName": "[0]",
+    "type": "StepGroup",
+    "templateScope": "local/demo-x6l98",
+    "phase": "Succeeded",
+    "boundaryID": "demo-x6l98",
+    "startedAt": "2023-08-04T14:15:26Z",
+    "finishedAt": "2023-08-04T14:15:49Z",
+    "progress": "1/1",
+    "resourcesDuration": { "cpu": 21, "memory": 32 },
+    "children": ["demo-x6l98-3881077233"]
+  },
+  "demo-x6l98-3881077233": {
+    "id": "demo-x6l98-3881077233",
+    "name": "demo-x6l98[0].prep-fp",
+    "displayName": "prep-fp",
+    "type": "Pod",
+    "templateName": "demo-ykdl6",
+    "templateScope": "local/demo-x6l98",
+    "phase": "Succeeded",
+    "boundaryID": "demo-x6l98",
+    "startedAt": "2023-08-04T14:15:26Z",
+    "finishedAt": "2023-08-04T14:15:39Z",
+    "progress": "1/1",
+    "resourcesDuration": { "cpu": 21, "memory": 32 },
+    "inputs": {
+      "parameters": [
+        {
+          "name": "name",
+          "value": "demo",
+          "description": "{\"type\": \"<class 'str'>\"}"
+        },
+        {
+          "name": "tags",
+          "value": "[\"benchmark-application-dflow-demo\", \"benchmark-version-v0.16.3\", \"benchmark-schedule-none\", \"benchmark-job-job-dflow-demo-v0.16.3-0d1748\"]",
+          "description": "{\"type\": \"typing.List[str]\"}"
+        },
+        {
+          "name": "benchmark_experiment",
+          "value": "dflow-example/benchmark",
+          "description": "{\"type\": \"<class 'str'>\"}"
+        },
+        { "name": "dflow_key", "value": "step1" }
+      ],
+      "artifacts": [
+        {
+          "name": "data",
+          "path": "/tmp/inputs/artifacts/data",
+          "oss": {
+            "key": "tmpn_emqghb.tgz"
+          }
+        },
+        {
+          "name": "dflow_python_packages",
+          "path": "/tmp/inputs/artifacts/dflow_python_packages",
+          "oss": {
+            "key": "tmp4a41wxz7.tgz"
+          }
+        }
+      ]
+    },
+    "outputs": {
+      "parameters": [
+        {
+          "name": "dflow_global",
+          "value": "demo-x6l98-demo-ykdl6-3881077233",
+          "globalName": "step1"
+        }
+      ],
+      "artifacts": [
+        {
+          "name": "data_output",
+          "path": "/tmp/outputs/artifacts/data_output",
+          "oss": {
+            "key": "data_output.tgz"
+          }
+        },
+        {
+          "name": "main-logs",
+          "oss": {
+            "key": "main.log"
+          }
+        }
+      ],
+      "exitCode": "0"
+    },
+    "hostNodeName": ""
+  }
+}

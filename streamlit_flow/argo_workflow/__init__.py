@@ -125,3 +125,9 @@ def st_argo_workflow1(dflow_nodes, height=400, width="100%", key=None) -> List[s
 
     component_value = _component_func(nodes=nodes, edges=edges, height=height, width=width, key=key)
     return component_value
+
+
+if __name__ == "__main__":
+    import json
+    data = json.load(open('data.json'))
+    st_argo_workflow(data, height=800, width="100%")
